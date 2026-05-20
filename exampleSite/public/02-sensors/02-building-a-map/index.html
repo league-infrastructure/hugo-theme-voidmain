@@ -694,19 +694,119 @@ body {
   }
 }
 
-@media (max-width: 900px) {
-  .page { flex-direction: column; }
+/* Mobile header — hidden on desktop */
+.mobile-header {
+  display: none;
+}
 
-  .sidebar-drawer {
-    width: 100%;
-    height: auto;
-    position: static;
-    border-right: 0;
+.btn-next-mobile {
+  display: none;
+}
+
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-fg-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.mobile-logo-img {
+  width: auto;
+  height: 32px;
+  flex: 0 0 auto;
+}
+
+.mobile-brand-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hamburger {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-fg-1);
+  border-radius: var(--radius-sm);
+}
+
+.hamburger:hover { background: var(--color-bg-subtle); }
+
+/* Sidebar overlay — hidden by default */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(21, 20, 15, 0.4);
+}
+
+.sidebar-overlay.visible { display: block; }
+
+@media (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    position: sticky;
+    top: 0;
+    z-index: 160;
+    height: 52px;
+    padding: 0 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: saturate(180%) blur(10px);
+    -webkit-backdrop-filter: saturate(180%) blur(10px);
     border-bottom: 1px solid var(--color-border);
   }
 
-  .sidebar-container {
-    min-height: auto;
+  .sidebar-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(var(--sidebar-width), 85vw);
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.25s var(--ease-out);
+    border-right: 1px solid var(--color-border);
+    overflow-y: auto;
+  }
+
+  .sidebar-drawer.open {
+    transform: translateX(0);
+  }
+
+  .session-sticky {
+    top: 52px;
+  }
+
+  .btn-next-mobile {
+    display: inline-block;
+    flex: 0 0 auto;
+    text-decoration: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.35rem 0.65rem;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    background: var(--color-primary);
+    white-space: nowrap;
+  }
+
+  .btn-next-mobile:hover {
+    background: var(--color-primary-dark);
+    color: #fff;
   }
 }
 
@@ -854,8 +954,9 @@ body {
   
   
 
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
   <div class="page">
-    <aside class="sidebar-drawer">
+    <aside class="sidebar-drawer" id="sidebar-drawer">
       <div class="sidebar-container">
         <a href="/" class="sidebar-brand">
           <img src="https://images.jointheleague.org/logos/logo4.png" alt="League logo" class="sidebar-logo">
@@ -968,12 +1069,26 @@ body {
       </div>
     </aside>
     <div class="main">
+      <div class="mobile-header">
+        <button class="hamburger" id="sidebar-toggle" aria-label="Open navigation">
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="currentColor" aria-hidden="true">
+            <rect width="20" height="2" rx="1"/>
+            <rect y="7" width="20" height="2" rx="1"/>
+            <rect y="14" width="20" height="2" rx="1"/>
+          </svg>
+        </button>
+        <a href="/" class="mobile-brand">
+          <img src="https://images.jointheleague.org/logos/logo4.png" alt="League logo" class="mobile-logo-img">
+          <span class="mobile-brand-title">Robot Explorers</span>
+        </a>
+      </div>
       <header class="session-sticky">
         <div class="session-sticky-row">
           <div class="session-sticky-pos">
             <span class="pos-class">Sensors and Mapping</span>
             Building a Map
           </div>
+          
           <button type="button" class="btn-resources" id="jump-overview">Overview</button>
         </div>
         <div class="jump-row" id="jump-row"></div>
@@ -1144,6 +1259,42 @@ a direction). This significantly increases coverage.</p>
   <script>
   (function() {
     
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+    var sidebarDrawer = document.getElementById('sidebar-drawer');
+    var sidebarOverlay = document.getElementById('sidebar-overlay');
+    function openSidebar() {
+      sidebarDrawer.classList.add('open');
+      sidebarOverlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      sidebarDrawer.classList.remove('open');
+      sidebarOverlay.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+    if (sidebarToggle && sidebarDrawer) {
+      sidebarToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.contains('open') ? closeSidebar() : openSidebar();
+      });
+      sidebarOverlay.addEventListener('click', closeSidebar);
+      
+      sidebarDrawer.querySelectorAll('.sidebar-lessons a').forEach(function(a) {
+        a.addEventListener('click', closeSidebar);
+      });
+      sidebarDrawer.querySelectorAll('.sidebar-module-link').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          var li = a.closest('.sidebar-module');
+          if (li) li.classList.toggle('open');
+        });
+      });
+      
+      sidebarDrawer.querySelectorAll('.sidebar-brand, .sidebar-curriculum-link a, .sidebar-footer a').forEach(function(a) {
+        a.addEventListener('click', closeSidebar);
+      });
+    }
+
+    
     var sections = document.querySelectorAll('.instructor-guide-section');
     if (sections.length) {
       var toggle = document.getElementById('instructor-toggle');
@@ -1204,7 +1355,13 @@ a direction). This significantly increases coverage.</p>
         chip.className = 'jump-chip';
         chip.textContent = h.textContent.trim();
         chip.addEventListener('click', function() {
-          document.getElementById(h.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+          var target = document.getElementById(h.id);
+          if (!target) return;
+          var stickyOffset = document.querySelector('.session-sticky').offsetHeight +
+            (document.querySelector('.mobile-header') && window.getComputedStyle(document.querySelector('.mobile-header')).display !== 'none'
+              ? document.querySelector('.mobile-header').offsetHeight : 0);
+          var top = target.getBoundingClientRect().top + window.scrollY - stickyOffset - 8;
+          window.scrollTo({ top: top, behavior: 'smooth' });
         });
         jumpRow.appendChild(chip);
         chips.push({ heading: h, chip: chip });
