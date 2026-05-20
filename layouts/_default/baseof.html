@@ -42,8 +42,9 @@
     {{ $next = index $allPages 0 }}
   {{ end }}
 
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
   <div class="page">
-    <aside class="sidebar-drawer">
+    <aside class="sidebar-drawer" id="sidebar-drawer">
       <div class="sidebar-container">
         <a href="{{ .Site.Home.RelPermalink }}" class="sidebar-brand">
           <img src="https://images.jointheleague.org/logos/logo4.png" alt="League logo" class="sidebar-logo">
@@ -129,7 +130,31 @@
       </div>
     </aside>
     <div class="main">
-      <div class="content">
+      <div class="mobile-header">
+        <button class="hamburger" id="sidebar-toggle" aria-label="Open navigation">
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="currentColor" aria-hidden="true">
+            <rect width="20" height="2" rx="1"/>
+            <rect y="7" width="20" height="2" rx="1"/>
+            <rect y="14" width="20" height="2" rx="1"/>
+          </svg>
+        </button>
+        <a href="{{ .Site.Home.RelPermalink }}" class="mobile-brand">
+          <img src="https://images.jointheleague.org/logos/logo4.png" alt="League logo" class="mobile-logo-img">
+          <span class="mobile-brand-title">{{ .Site.Title }}</span>
+        </a>
+      </div>
+      <header class="session-sticky">
+        <div class="session-sticky-row">
+          <div class="session-sticky-pos">
+            <span class="pos-class">{{ with .Parent }}{{ .Title }}{{ else }}Curriculum{{ end }}</span>
+            {{ .Title }}
+          </div>
+          {{ with $next }}<a href="{{ .RelPermalink }}" class="btn-next-mobile">Next →</a>{{ end }}
+          <button type="button" class="btn-resources" id="jump-overview">Overview</button>
+        </div>
+        <div class="jump-row" id="jump-row"></div>
+      </header>
+      <div class="content session-content">
         {{ block "main" . }}
           {{ .Content }}
         {{ end }}
@@ -160,6 +185,42 @@
   </div>
   <script>
   (function() {
+    // Mobile sidebar toggle
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+    var sidebarDrawer = document.getElementById('sidebar-drawer');
+    var sidebarOverlay = document.getElementById('sidebar-overlay');
+    function openSidebar() {
+      sidebarDrawer.classList.add('open');
+      sidebarOverlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      sidebarDrawer.classList.remove('open');
+      sidebarOverlay.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+    if (sidebarToggle && sidebarDrawer) {
+      sidebarToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.contains('open') ? closeSidebar() : openSidebar();
+      });
+      sidebarOverlay.addEventListener('click', closeSidebar);
+      // Lesson links close the sidebar; module section headers toggle expand/collapse and stay open
+      sidebarDrawer.querySelectorAll('.sidebar-lessons a').forEach(function(a) {
+        a.addEventListener('click', closeSidebar);
+      });
+      sidebarDrawer.querySelectorAll('.sidebar-module-link').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          var li = a.closest('.sidebar-module');
+          if (li) li.classList.toggle('open');
+        });
+      });
+      // Non-module links (brand, footer links) still close the sidebar
+      sidebarDrawer.querySelectorAll('.sidebar-brand, .sidebar-curriculum-link a, .sidebar-footer a').forEach(function(a) {
+        a.addEventListener('click', closeSidebar);
+      });
+    }
+
     // Instructor guide panel
     var sections = document.querySelectorAll('.instructor-guide-section');
     if (sections.length) {
@@ -194,6 +255,66 @@
       });
       aboutModal.addEventListener('click', function(e) {
         if (e.target === aboutModal) aboutModal.style.display = 'none';
+      });
+    }
+
+    // Build sticky jump chips from h2/h3 headings in content
+    var content = document.querySelector('.session-content');
+    var jumpRow = document.getElementById('jump-row');
+    var overviewBtn = document.getElementById('jump-overview');
+
+    function slugify(text) {
+      return (text || '').toLowerCase().trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
+    if (content && jumpRow) {
+      var headings = Array.prototype.slice.call(content.querySelectorAll('h2, h3')).slice(0, 6);
+      var chips = [];
+
+      headings.forEach(function(h) {
+        if (!h.id) h.id = slugify(h.textContent);
+        if (!h.id) return;
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'jump-chip';
+        chip.textContent = h.textContent.trim();
+        chip.addEventListener('click', function() {
+          var target = document.getElementById(h.id);
+          if (!target) return;
+          var stickyOffset = document.querySelector('.session-sticky').offsetHeight +
+            (document.querySelector('.mobile-header') && window.getComputedStyle(document.querySelector('.mobile-header')).display !== 'none'
+              ? document.querySelector('.mobile-header').offsetHeight : 0);
+          var top = target.getBoundingClientRect().top + window.scrollY - stickyOffset - 8;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        });
+        jumpRow.appendChild(chip);
+        chips.push({ heading: h, chip: chip });
+      });
+
+      function setActiveChip() {
+        if (!chips.length) return;
+        var active = chips[0];
+        chips.forEach(function(pair) {
+          var box = pair.heading.getBoundingClientRect();
+          if (box.top <= 140) active = pair;
+        });
+        chips.forEach(function(pair) {
+          pair.chip.classList.toggle('active', pair === active);
+        });
+      }
+
+      if (chips.length) {
+        setActiveChip();
+        window.addEventListener('scroll', setActiveChip, { passive: true });
+      }
+    }
+
+    if (overviewBtn) {
+      overviewBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
   })();

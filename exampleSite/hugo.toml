@@ -1,0 +1,10 @@
+baseURL = "http://localhost:1313/"
+languageCode = "en-us"
+title = "Robot Explorers"
+themesDir = "../.."
+theme = "hugo-theme-voidmain"
+
+[params]
+  description = "Learn programming by building autonomous robots that explore and map unknown environments."
+  curriculum_version = "1.0.0"
+  curik_version = "0.20260320.2"

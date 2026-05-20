@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://localhost:1314/02-sensors/01-distance-sensor/</loc>
+  </url><url>
+    <loc>http://localhost:1314/01-introduction/01-getting-started/</loc>
+  </url><url>
+    <loc>http://localhost:1314/01-introduction/</loc>
+  </url><url>
+    <loc>http://localhost:1314/02-sensors/02-building-a-map/</loc>
+  </url><url>
+    <loc>http://localhost:1314/01-introduction/02-movement-and-coordinates/</loc>
+  </url><url>
+    <loc>http://localhost:1314/02-sensors/</loc>
+  </url><url>
+    <loc>http://localhost:1314/categories/</loc>
+  </url><url>
+    <loc>http://localhost:1314/</loc>
+  </url><url>
+    <loc>http://localhost:1314/tags/</loc>
+  </url>
+</urlset>

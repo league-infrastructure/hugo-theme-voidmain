@@ -1,4 +1,11 @@
-*, *::before, *::after { box-sizing: border-box; }
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction — Robot Explorers</title>
+  
+  <style>*, *::before, *::after { box-sizing: border-box; }
 
 :root {
   --color-primary: #f37121;
@@ -811,3 +818,476 @@ body {
     grid-template-columns: 1fr;
   }
 }
+</style>
+  
+  <style>/* Instructor Guide — hidden sections collected into footer panel */
+.instructor-guide-section {
+  display: none;
+}
+
+/* Footer icon button */
+.footer-instructor button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-foreground-muted);
+  padding: 0;
+  line-height: 1;
+}
+
+.footer-instructor button:hover {
+  color: var(--color-brand-content);
+}
+
+/* Slide-up panel */
+.instructor-guide-panel {
+  border-top: 2px solid #bf8700;
+  background: #fffbeb;
+  padding: 0;
+  margin-top: 0.75rem;
+}
+
+.instructor-guide-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.875rem;
+}
+
+.instructor-guide-panel-header button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #92400e;
+  line-height: 1;
+}
+
+.instructor-guide-panel-body {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.instructor-guide-panel-body p {
+  margin-bottom: 0.5rem;
+}
+
+/* Callout boxes */
+.callout {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border-left: 4px solid #0969da;
+  border-radius: 4px;
+  background: #f6f8fa;
+}
+
+.callout-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.callout-info {
+  border-left-color: #0969da;
+}
+
+.callout-warning {
+  border-left-color: #d1242f;
+  background: #fff5f5;
+}
+
+.callout-tip {
+  border-left-color: #1a7f37;
+  background: #f0fff4;
+}
+</style>
+  
+  
+  
+</head>
+<body>
+  
+  
+  
+  
+    
+    
+      
+    
+      
+    
+  
+    
+    
+      
+    
+      
+    
+  
+  
+  
+  
+  
+  
+    
+      
+      
+      
+        
+      
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+  
+  
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <div class="page">
+    <aside class="sidebar-drawer" id="sidebar-drawer">
+      <div class="sidebar-container">
+        <a href="/" class="sidebar-brand">
+          <img src="https://images.jointheleague.org/logos/logo4.png" alt="League logo" class="sidebar-logo">
+          <span class="sidebar-brand-text">Robot Explorers</span>
+        </a>
+        <nav class="sidebar-tree">
+          <ul>
+            
+            
+            
+            
+            
+              
+            
+              
+            
+            <li class="sidebar-module open current">
+              <a href="/01-introduction/" class="sidebar-module-link">Introduction</a>
+              
+              
+              <ul class="sidebar-lessons">
+                
+                <li>
+                  <a href="/01-introduction/01-getting-started/">Getting Started</a>
+                </li>
+                
+                <li>
+                  <a href="/01-introduction/02-movement-and-coordinates/">Movement and Coordinates</a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            
+            
+            
+              
+            
+              
+            
+            <li class="sidebar-module">
+              <a href="/02-sensors/" class="sidebar-module-link">Sensors and Mapping</a>
+              
+              
+              <ul class="sidebar-lessons">
+                
+                <li>
+                  <a href="/02-sensors/01-distance-sensor/">Distance Sensor</a>
+                </li>
+                
+                <li>
+                  <a href="/02-sensors/02-building-a-map/">Building a Map</a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            
+          </ul>
+        </nav>
+        <div class="sidebar-nav-buttons">
+          
+          <a href="/01-introduction/01-getting-started/" class="sidebar-nav-next">Next →</a>
+        </div>
+        <div class="sidebar-curriculum-link">
+          <a href="https://curriculum.jointheleague.org">← All Curricula</a>
+        </div>
+        <div class="sidebar-footer">
+          <div class="sidebar-footer-brand">
+            <a href="https://www.jointheleague.org" class="sidebar-footer-league">
+              <img src="https://images.jointheleague.org/logos/flag.png" alt="" class="sidebar-footer-flag">
+              <span class="sidebar-footer-org">The League of<br>Amazing Programmers</span>
+            </a>
+          </div>
+          <div class="sidebar-footer-tagline">Igniting Young Minds Through Coding</div>
+          <div class="sidebar-footer-meta">
+            <span class="sidebar-footer-copyright">&copy; 2026</span>
+            <span class="sidebar-footer-sep">&middot;</span><a href="https://github.com/league-infrastructure/curriculum-hugo-theme" title="GitHub repository" class="sidebar-footer-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </a>
+            <span class="sidebar-footer-sep">&middot;</span>
+            <a href="#" class="sidebar-footer-about" id="about-toggle">About</a>
+          </div>
+        </div>
+      </div>
+      <div class="about-modal" id="about-modal" style="display:none;">
+        <div class="about-modal-content">
+          <div class="about-modal-header">
+            <strong>About This Curriculum</strong>
+            <button type="button" id="about-close" aria-label="Close">✕</button>
+          </div>
+          <div class="about-modal-body">
+            <h3 class="about-title">Robot Explorers</h3>
+            <p class="about-description">Learn programming by building autonomous robots that explore and map unknown environments.</p>
+            
+            <p class="about-repo"><a href="https://github.com/league-infrastructure/curriculum-hugo-theme">https://github.com/league-infrastructure/curriculum-hugo-theme</a></p>
+            
+            <table class="about-versions">
+              <tr><td>Curriculum</td><td>1.0.0</td></tr>
+              <tr><td>Tier</td><td>Intermediate</td></tr>
+              <tr><td>Curik</td><td>0.20260320.2</td></tr>
+              <tr><td>Theme</td><td>0.20260314.6</td></tr>
+              <tr><td>Hugo</td><td>0.157.0</td></tr>
+            </table>
+            <p class="about-league"><a href="https://www.jointheleague.org">The League of Amazing Programmers</a><br>Igniting Young Minds Through Coding</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div class="main">
+      <div class="mobile-header">
+        <button class="hamburger" id="sidebar-toggle" aria-label="Open navigation">
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="currentColor" aria-hidden="true">
+            <rect width="20" height="2" rx="1"/>
+            <rect y="7" width="20" height="2" rx="1"/>
+            <rect y="14" width="20" height="2" rx="1"/>
+          </svg>
+        </button>
+        <a href="/" class="mobile-brand">
+          <img src="https://images.jointheleague.org/logos/logo4.png" alt="League logo" class="mobile-logo-img">
+          <span class="mobile-brand-title">Robot Explorers</span>
+        </a>
+      </div>
+      <header class="session-sticky">
+        <div class="session-sticky-row">
+          <div class="session-sticky-pos">
+            <span class="pos-class">Robot Explorers</span>
+            Introduction
+          </div>
+          <a href="/01-introduction/01-getting-started/" class="btn-next-mobile">Next →</a>
+          <button type="button" class="btn-resources" id="jump-overview">Overview</button>
+        </div>
+        <div class="jump-row" id="jump-row"></div>
+      </header>
+      <div class="content session-content">
+        
+<section class="session-header" data-jump="Overview">
+  <span class="eyebrow"><span>Module</span><span class="pos">· Introduction</span></span>
+  <h1 class="session-title">Introduction</h1>
+  <p class="session-summary"><p>Get your environment set up and send your first commands to the robot.
+By the end of this module you will have a working Python environment,
+a running simulator, and a robot that moves on command.</p></p>
+</section>
+
+
+<section class="section-block" data-jump="Overview">
+  <p>Get your environment set up and send your first commands to the robot.
+By the end of this module you will have a working Python environment,
+a running simulator, and a robot that moves on command.</p>
+
+</section>
+
+
+
+<section class="section-block" data-jump="Lessons">
+  <div class="section-head">
+    <h2>Lessons</h2>
+    <span class="section-meta">2 total</span>
+  </div>
+  <ul class="lesson-list">
+    
+    <li><a href="/01-introduction/01-getting-started/">Getting Started</a></li>
+    
+    <li><a href="/01-introduction/02-movement-and-coordinates/">Movement and Coordinates</a></li>
+    
+  </ul>
+</section>
+
+
+      </div>
+      <footer class="bottom-of-page">
+        
+        <div class="prev-next">
+          <div></div>
+          <div><a href="/01-introduction/01-getting-started/">Getting Started →</a></div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="footer-instructor" id="instructor-toggle" style="display:none;">
+            <button type="button" title="Instructor Guide" aria-label="Toggle instructor guide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="instructor-guide-panel" id="instructor-panel" style="display:none;">
+          <div class="instructor-guide-panel-header">
+            <strong>Instructor Guide</strong>
+            <button type="button" id="instructor-close" aria-label="Close">✕</button>
+          </div>
+          <div class="instructor-guide-panel-body" id="instructor-body"></div>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <script>
+  (function() {
+    
+    var sidebarToggle = document.getElementById('sidebar-toggle');
+    var sidebarDrawer = document.getElementById('sidebar-drawer');
+    var sidebarOverlay = document.getElementById('sidebar-overlay');
+    function openSidebar() {
+      sidebarDrawer.classList.add('open');
+      sidebarOverlay.classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      sidebarDrawer.classList.remove('open');
+      sidebarOverlay.classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+    if (sidebarToggle && sidebarDrawer) {
+      sidebarToggle.addEventListener('click', function() {
+        sidebarDrawer.classList.contains('open') ? closeSidebar() : openSidebar();
+      });
+      sidebarOverlay.addEventListener('click', closeSidebar);
+      
+      sidebarDrawer.querySelectorAll('.sidebar-lessons a').forEach(function(a) {
+        a.addEventListener('click', closeSidebar);
+      });
+      sidebarDrawer.querySelectorAll('.sidebar-module-link').forEach(function(a) {
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          var li = a.closest('.sidebar-module');
+          if (li) li.classList.toggle('open');
+        });
+      });
+      
+      sidebarDrawer.querySelectorAll('.sidebar-brand, .sidebar-curriculum-link a, .sidebar-footer a').forEach(function(a) {
+        a.addEventListener('click', closeSidebar);
+      });
+    }
+
+    
+    var sections = document.querySelectorAll('.instructor-guide-section');
+    if (sections.length) {
+      var toggle = document.getElementById('instructor-toggle');
+      var panel = document.getElementById('instructor-panel');
+      var body = document.getElementById('instructor-body');
+      var close = document.getElementById('instructor-close');
+      toggle.style.display = '';
+      sections.forEach(function(s) {
+        body.innerHTML += s.innerHTML;
+        s.remove();
+      });
+      toggle.querySelector('button').addEventListener('click', function() {
+        panel.style.display = panel.style.display === 'none' ? '' : 'none';
+      });
+      close.addEventListener('click', function() {
+        panel.style.display = 'none';
+      });
+    }
+
+    
+    var aboutToggle = document.getElementById('about-toggle');
+    var aboutModal = document.getElementById('about-modal');
+    var aboutClose = document.getElementById('about-close');
+    if (aboutToggle && aboutModal) {
+      aboutToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        aboutModal.style.display = '';
+      });
+      aboutClose.addEventListener('click', function() {
+        aboutModal.style.display = 'none';
+      });
+      aboutModal.addEventListener('click', function(e) {
+        if (e.target === aboutModal) aboutModal.style.display = 'none';
+      });
+    }
+
+    
+    var content = document.querySelector('.session-content');
+    var jumpRow = document.getElementById('jump-row');
+    var overviewBtn = document.getElementById('jump-overview');
+
+    function slugify(text) {
+      return (text || '').toLowerCase().trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
+    if (content && jumpRow) {
+      var headings = Array.prototype.slice.call(content.querySelectorAll('h2, h3')).slice(0, 6);
+      var chips = [];
+
+      headings.forEach(function(h) {
+        if (!h.id) h.id = slugify(h.textContent);
+        if (!h.id) return;
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'jump-chip';
+        chip.textContent = h.textContent.trim();
+        chip.addEventListener('click', function() {
+          var target = document.getElementById(h.id);
+          if (!target) return;
+          var stickyOffset = document.querySelector('.session-sticky').offsetHeight +
+            (document.querySelector('.mobile-header') && window.getComputedStyle(document.querySelector('.mobile-header')).display !== 'none'
+              ? document.querySelector('.mobile-header').offsetHeight : 0);
+          var top = target.getBoundingClientRect().top + window.scrollY - stickyOffset - 8;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        });
+        jumpRow.appendChild(chip);
+        chips.push({ heading: h, chip: chip });
+      });
+
+      function setActiveChip() {
+        if (!chips.length) return;
+        var active = chips[0];
+        chips.forEach(function(pair) {
+          var box = pair.heading.getBoundingClientRect();
+          if (box.top <= 140) active = pair;
+        });
+        chips.forEach(function(pair) {
+          pair.chip.classList.toggle('active', pair === active);
+        });
+      }
+
+      if (chips.length) {
+        setActiveChip();
+        window.addEventListener('scroll', setActiveChip, { passive: true });
+      }
+    }
+
+    if (overviewBtn) {
+      overviewBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+/* =============================================================
+   The League Curriculum — Design Tokens
+   ---------------------------------------------------------------
+   A delicate, documentation-grade extension of the main League
+   design system. We inherit Trade Gothic Pro + League orange,
+   but lean lighter, more spacious, and more typographically
+   refined — the lineage is Sphinx Furo, Stripe Docs, Vercel
+   Docs, Tailwind Docs.
+
+   - Lighter default weight (400 instead of bold)
+   - Tighter, more disciplined neutral scale (warm gray, not cool)
+   - Sparing orange (active nav, key CTAs only — never default links)
+   - A monospaced display companion (JetBrains Mono) for code,
+     because code is content here, not chrome.
+   - Three role overlays: STUDENT (default), INSTRUCTOR (amber),
+     HYBRID (both visible)
+   ============================================================= */
+
+@font-face {
+  font-family: 'Trade Gothic Pro';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('./fonts/TradeGothicLTPro-Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Trade Gothic Pro';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('./fonts/TradeGothicLTPro-Light.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Trade Gothic Pro';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/TradeGothicLTPro-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Trade Gothic Pro';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./fonts/TradeGothicLTPro-Bold.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Trade Gothic Pro';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/TradeGothicLTPro-Bold.ttf') format('truetype');
+}
+
+/* JetBrains Mono — the code companion. Loaded from Google Fonts
+   CDN; if offline, falls back to the OS monospace stack. */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ---------- Brand orange (sparing) ----------
+     Used only for: active sidebar item, primary CTA, focus ring,
+     and as the underline accent on inline links inside prose.
+     NEVER as default link color (we want a refined, professional
+     reading experience — orange everywhere feels marketing-y). */
+  --color-primary:        #f37121; /* League orange */
+  --color-primary-dark:   #c35512; /* hover / pressed */
+  --color-primary-deep:   #8a3b0a; /* headlines on light, accent text */
+  --color-primary-light:  #ffd4a3;
+  --color-primary-soft:   rgba(243, 113, 33, 0.12);
+  --color-primary-tint:   rgba(243, 113, 33, 0.06);
+  --color-active-bg:      #fff0e5; /* sidebar current-page background */
+  --color-active-fg:      #d45e18; /* sidebar current-page foreground */
+
+  /* ---------- Ink scale (warm neutrals) ----------
+     A 9-step warm-gray scale. Slightly warmer than pure neutral
+     so it harmonizes with the website's peach surfaces without
+     ever rendering as peach itself. Use ink-900 for body, ink-950
+     for headings, ink-700 for muted body, ink-500 for meta. */
+  --ink-50:   #faf9f7;
+  --ink-100:  #f4f3ef;
+  --ink-200:  #e8e6e0;
+  --ink-300:  #d3d0c8;
+  --ink-400:  #a8a59c;
+  --ink-500:  #75736c;   /* meta, captions */
+  --ink-600:  #555550;   /* secondary body */
+  --ink-700:  #3a3a36;   /* default body */
+  --ink-800:  #232320;
+  --ink-900:  #15140f;   /* headings */
+  --ink-950:  #0a0907;   /* highest contrast */
+
+  /* Semantic aliases for the ink scale (use these in components) */
+  --color-fg-1:       var(--ink-900); /* headings */
+  --color-fg-2:       var(--ink-700); /* body */
+  --color-fg-3:       var(--ink-600); /* secondary body */
+  --color-fg-muted:   var(--ink-500); /* meta */
+  --color-fg-subtle:  var(--ink-400); /* timestamps, captions */
+  --color-fg-inverse: #ffffff;
+
+  /* ---------- Surfaces ----------
+     Three flat surface tiers. Page is pure white. Subtle is the
+     sidebar / code-block background. Sunken is for inset panels
+     and table headers. No gradients in normal content. */
+  --color-bg-page:    #ffffff;
+  --color-bg-subtle:  #faf9f6;     /* sidebar, code block */
+  --color-bg-sunken:  #f4f3ef;     /* table header, callout body */
+  --color-bg-warm:    #fdf4ec;     /* rare — peach-tinted hero */
+  --color-bg-code:    #fbfaf7;
+  --color-bg-overlay: rgba(21, 20, 15, 0.45);
+
+  /* Borders — hairlines, never heavy */
+  --color-border:         #e8e6e0;
+  --color-border-soft:    #f0eee8;
+  --color-border-strong:  #d3d0c8;
+  --color-divider:        #ece9e2;
+
+  /* ---------- Link color ----------
+     Refined deep-orange — NOT the marketing orange. This is a
+     darker, more readable orange that reads as confident accent
+     in body copy without screaming. Hover darkens. Visited tints
+     toward the deep brand orange. */
+  --color-link:           #a14a13;
+  --color-link-hover:     #6f3309;
+  --color-link-visited:   #8a3b0a;
+
+  /* ---------- Role accents ----------
+     The three curriculum personas. */
+  --role-student:       #2563a3;   /* calm blue */
+  --role-student-soft:  rgba(37, 99, 163, 0.08);
+  --role-instructor:    #9a6b00;   /* deep amber */
+  --role-instructor-soft: #fff8e6;
+  --role-instructor-bd: #ead4a0;
+  --role-hybrid:        #5d5fef;   /* indigo — same as main system */
+
+  /* ---------- Topic colors (curriculum subjects) ----------
+     Inherited from main system, used as small chips on course
+     cards and lesson categories. Never used as full backgrounds. */
+  --topic-python:     #306998;
+  --topic-java:       #f89820;
+  --topic-robotics:   #e74c3c;
+  --topic-electronics:#9b59b6;
+  --topic-games:      #2ecc71;
+  --topic-web:        #3498db;
+  --topic-ai:         #6b3fa0;
+  --topic-default:    #75736c;
+
+  /* ---------- Callout / Admonition palette ----------
+     Each callout uses a tinted background + colored title bar +
+     subtle border. Slightly warmer than Furo's stock palette. */
+  --callout-note-fg:   #1f3a8a;
+  --callout-note-bg:   #eef2ff;
+  --callout-note-bd:   #c7d2fe;
+
+  --callout-tip-fg:    #115e3a;
+  --callout-tip-bg:    #ecfdf5;
+  --callout-tip-bd:    #a7e8c8;
+
+  --callout-warn-fg:   #8a4b00;
+  --callout-warn-bg:   #fff7ed;
+  --callout-warn-bd:   #fdba74;
+
+  --callout-danger-fg: #971b1b;
+  --callout-danger-bg: #fef2f2;
+  --callout-danger-bd: #fca5a5;
+
+  --callout-task-fg:   #3a3a36;
+  --callout-task-bg:   #faf9f6;
+  --callout-task-bd:   #e8e6e0;
+
+  /* Generic semantic colors */
+  --color-success: #1f8a5b;
+  --color-warning: #c87f08;
+  --color-danger:  #b42318;
+  --color-info:    #2563a3;
+
+  /* ---------- Typography ----------
+     Trade Gothic Pro is the brand voice. We pair it with
+     JetBrains Mono for code (sharper, more readable than
+     SF Mono at small sizes — code is content here). */
+  --font-sans:    'Trade Gothic Pro', 'Trade Gothic LT Std', 'Trade Gothic', Arial, Helvetica, sans-serif;
+  --font-body:    var(--font-sans);
+  --font-display: var(--font-sans);
+  --font-mono:    'JetBrains Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  /* Type scale — slightly tighter than main site. Curriculum
+     prose is read for long stretches; we want comfortable, not
+     loud. Body is 16.5px (vs main site 17.6px) for a more
+     "documentation" density. */
+  --fs-xs:   12px;
+  --fs-sm:   13.5px;   /* sidebar nav, captions */
+  --fs-base: 16.5px;   /* body */
+  --fs-md:   18px;     /* lead paragraph */
+  --fs-lg:   20px;
+  --fs-xl:   24px;     /* h3 */
+  --fs-2xl:  30px;     /* h2 */
+  --fs-3xl:  36px;     /* h1 */
+  --fs-4xl:  44px;     /* course landing */
+  --fs-5xl:  56px;     /* hero */
+
+  --fw-light:    300;
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* Line-heights — body is generous (1.7) for long reading; */
+  /* headings are tight (1.2-1.3). */
+  --lh-tight:   1.15;
+  --lh-snug:    1.3;
+  --lh-normal:  1.5;
+  --lh-body:    1.7;
+  --lh-relaxed: 1.85;
+
+  /* Letter-spacing — Trade Gothic is geometric; subtle negative */
+  /* tracking on display sizes keeps it tight; positive tracking */
+  /* on small caps and eyebrows. */
+  --ls-tight:  -0.015em;
+  --ls-snug:   -0.005em;
+  --ls-normal: 0;
+  --ls-wide:   0.04em;
+  --ls-wider:  0.12em;   /* eyebrow uppercase */
+
+  /* ---------- Spacing scale ---------- */
+  --space-2xs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 88px;
+  --space-5xl: 120px;
+
+  /* ---------- Radii ----------
+     Docs themes are squarer than marketing sites. We pull back
+     from the main system's 40px card radius — too soft for
+     dense documentation. Cards are 10-12px; pills are pills. */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* ---------- Shadows ----------
+     Very, very soft. Documentation themes barely shadow —
+     it should feel like printed paper, not a UI dashboard. */
+  --shadow-xs:   0 1px 0 rgba(15, 14, 10, 0.04);
+  --shadow-sm:   0 1px 2px rgba(15, 14, 10, 0.05);
+  --shadow-md:   0 4px 12px -2px rgba(15, 14, 10, 0.06), 0 2px 4px -2px rgba(15, 14, 10, 0.04);
+  --shadow-lg:   0 12px 28px -8px rgba(15, 14, 10, 0.10), 0 4px 10px -4px rgba(15, 14, 10, 0.05);
+  --shadow-card: 0 1px 2px rgba(15, 14, 10, 0.04), 0 1px 3px rgba(15, 14, 10, 0.06);
+  --shadow-focus: 0 0 0 3px rgba(243, 113, 33, 0.30);
+
+  /* ---------- Layout ----------
+     Three column widths matter:
+       sidebar    — 280px (a little wider than Furo's 15em)
+       content    — 760px reading column
+       page-max   — 1320px outer container
+     The sidebar sits sticky to the left, content centers in the
+     remaining space. */
+  --sidebar-width: 280px;
+  --content-width: 760px;
+  --page-max:      1320px;
+
+  /* Right-side TOC ("On this page") */
+  --toc-width: 220px;
+
+  /* ---------- Motion ---------- */
+  --ease-standard: cubic-bezier(.2, .7, .3, 1);
+  --ease-out:      cubic-bezier(0, 0, .2, 1);
+  --dur-fast: 0.12s;
+  --dur-base: 0.18s;
+  --dur-slow: 0.30s;
+}
+
+/* =============================================================
+   Universal inheritance — every nested element inherits Trade
+   Gothic Pro unless explicitly overridden (e.g. <code>).
+   ============================================================= */
+
+html {
+  font-family: var(--font-body);
+  color: var(--color-fg-2);
+  background: var(--color-bg-page);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+*, *::before, *::after {
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-fg-2);
+  background: var(--color-bg-page);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+}
+
+/* =============================================================
+   Semantic type roles
+   ============================================================= */
+
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-3xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tight);
+  color: var(--color-fg-1);
+  margin: 0 0 var(--space-md);
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-snug);
+  color: var(--color-fg-1);
+  margin: var(--space-2xl) 0 var(--space-sm);
+  padding-bottom: var(--space-2xs);
+}
+
+h3, .h3 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xl);
+  line-height: var(--lh-snug);
+  color: var(--color-fg-1);
+  margin: var(--space-xl) 0 var(--space-xs);
+}
+
+h4, .h4 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-lg);
+  color: var(--color-fg-1);
+  margin: var(--space-lg) 0 var(--space-xs);
+}
+
+h5, .h5 {
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-base);
+  text-transform: none;
+  color: var(--color-fg-1);
+  margin: var(--space-md) 0 var(--space-2xs);
+}
+
+p {
+  margin: 0 0 var(--space-md);
+  text-wrap: pretty;
+}
+
+small, .text-sm  { font-size: var(--fs-sm); }
+.text-xs         { font-size: var(--fs-xs); }
+.text-muted      { color: var(--color-fg-muted); }
+.text-subtle     { color: var(--color-fg-subtle); }
+.text-body       { color: var(--color-fg-2); }
+.text-heading    { color: var(--color-fg-1); }
+
+/* Lead paragraph — first paragraph of a course landing */
+.lead {
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+  color: var(--color-fg-3);
+  margin-bottom: var(--space-lg);
+}
+
+/* Eyebrow / kicker label */
+.eyebrow {
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wider);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  display: inline-block;
+  margin-bottom: var(--space-xs);
+}
+
+/* Code — JetBrains Mono, with subtle warm background.
+   Inline code reads in brand-deep-orange so it pops in prose
+   without being loud. */
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+  font-feature-settings: "calt" 0; /* disable ligatures in docs code */
+  font-size: 0.88em;
+}
+
+code {
+  background: var(--color-bg-sunken);
+  padding: 0.12em 0.4em;
+  border-radius: var(--radius-xs);
+  color: var(--color-primary-deep);
+  font-weight: var(--fw-medium);
+}
+
+pre {
+  background: var(--color-bg-code);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: var(--space-md) 0;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--color-fg-1);
+  font-weight: var(--fw-regular);
+}
+
+/* Keyboard key */
+kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 0.82em;
+  border: 1px solid var(--color-border-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-page);
+  color: var(--color-fg-1);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+/* Links — sober deep-orange, underlined on hover only.
+   In sidebar / nav contexts links should override to muted. */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  transition: color var(--dur-base) var(--ease-out);
+}
+a:hover, a:focus-visible {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-xs);
+}
+
+/* Block quote — for inset prose, especially "what students do" */
+blockquote {
+  margin: var(--space-md) 0;
+  padding: var(--space-sm) var(--space-lg);
+  border-left: 2px solid var(--color-primary);
+  color: var(--color-fg-3);
+  font-style: normal;
+  font-size: var(--fs-md);
+  line-height: var(--lh-relaxed);
+}
+
+blockquote p:last-child { margin-bottom: 0; }
+
+/* Horizontal rule — hairline, low contrast */
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--color-divider);
+  margin: var(--space-2xl) 0;
+}
+
+/* Lists — comfortable indentation, bullet markers tinted */
+ul, ol {
+  margin: 0 0 var(--space-md);
+  padding-left: var(--space-lg);
+}
+
+ul li, ol li {
+  margin-bottom: 0.35em;
+  line-height: var(--lh-normal);
+}
+
+ul li::marker { color: var(--color-fg-subtle); }
+ol li::marker { color: var(--color-fg-muted); font-weight: var(--fw-semibold); }
+
+/* Tables — Furo lineage, hairlined */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-md) 0 var(--space-lg);
+  font-size: var(--fs-sm);
+}
+
+th, td {
+  border-bottom: 1px solid var(--color-border-soft);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  font-weight: var(--fw-semibold);
+  color: var(--color-fg-1);
+  background: var(--color-bg-sunken);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+}
+
+/* Image inline behavior */
+img { max-width: 100%; height: auto; }
+img.inline {
+  display: inline;
+  height: 1.1em;
+  vertical-align: text-bottom;
+  margin: 0 0.15em;
+}

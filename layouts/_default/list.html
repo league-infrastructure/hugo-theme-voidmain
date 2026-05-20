@@ -1,11 +1,27 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
-{{ .Content }}
+<section class="session-header" data-jump="Overview">
+  <span class="eyebrow"><span>Module</span><span class="pos">· {{ .Title }}</span></span>
+  <h1 class="session-title">{{ .Title }}</h1>
+  {{ with .Summary }}<p class="session-summary">{{ . }}</p>{{ end }}
+</section>
+
+{{ if .Content }}
+<section class="section-block" data-jump="Overview">
+  {{ .Content }}
+</section>
+{{ end }}
+
 {{ if .Pages }}
-<ul>
-  {{ range .Pages }}
-  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-  {{ end }}
-</ul>
+<section class="section-block" data-jump="Lessons">
+  <div class="section-head">
+    <h2>Lessons</h2>
+    <span class="section-meta">{{ len .Pages }} total</span>
+  </div>
+  <ul class="lesson-list">
+    {{ range .Pages }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+</section>
 {{ end }}
 {{ end }}
