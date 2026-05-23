@@ -3,7 +3,7 @@
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tags — Robot Explorers</title>
+  <title>A* Pathfinding — Robot Explorers</title>
   
   <style>*, *::before, *::after { box-sizing: border-box; }
 
@@ -974,16 +974,22 @@ body {
     
   
     
-  
+      
+      
+        
+      
+      
+        
+      
     
   
     
   
     
   
-  
-  
     
+  
+  
   
 
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -1057,7 +1063,7 @@ body {
             
               
             
-            <li class="sidebar-module">
+            <li class="sidebar-module open">
               <a href="/03-navigation/" class="sidebar-module-link">Navigation Algorithms</a>
               
               
@@ -1071,7 +1077,7 @@ body {
                   <a href="/03-navigation/02-wall-following/">Wall Following</a>
                 </li>
                 
-                <li>
+                <li class="current">
                   <a href="/03-navigation/03-a-star/">A* Pathfinding</a>
                 </li>
                 
@@ -1108,8 +1114,8 @@ body {
           </ul>
         </nav>
         <div class="sidebar-nav-buttons">
-          
-          <a href="/01-introduction/" class="sidebar-nav-next">Next →</a>
+          <a href="/03-navigation/02-wall-following/" class="sidebar-nav-prev">← Previous</a>
+          <a href="/04-decision-making/" class="sidebar-nav-next">Next →</a>
         </div>
         <div class="sidebar-curriculum-link">
           <a href="https://curriculum.jointheleague.org">← All Curricula</a>
@@ -1173,32 +1179,99 @@ body {
       <header class="session-sticky">
         <div class="session-sticky-row">
           <div class="session-sticky-pos">
-            <span class="pos-class">Robot Explorers</span>
-            Tags
+            <span class="pos-class">Navigation Algorithms</span>
+            A* Pathfinding
           </div>
-          <a href="/01-introduction/" class="btn-next-mobile">Next →</a>
+          <a href="/04-decision-making/" class="btn-next-mobile">Next →</a>
           <button type="button" class="btn-resources" id="jump-overview">Overview</button>
         </div>
         <div class="jump-row" id="jump-row"></div>
       </header>
       <div class="content session-content">
         
-<section class="session-header" data-jump="Overview">
-  <span class="eyebrow"><span>Module</span><span class="pos">· Tags</span></span>
-  <h1 class="session-title">Tags</h1>
-  
-</section>
+<article class="session-page">
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    
+    / <a href="/03-navigation/">Navigation Algorithms</a>
+    
+    / <span>A* Pathfinding</span>
+  </nav>
 
+  <section class="session-header" data-jump="Overview">
+    <span class="eyebrow">
+      <span>Lesson</span>
+      <span class="pos">· Navigation Algorithms</span>
+    </span>
+    <h1 class="session-title">A* Pathfinding</h1>
+    <p class="session-summary"><p>A* combines the completeness of BFS with a heuristic that guides the
+search toward the goal, making it much faster on large grids.</p>
+<h2 id="heuristic">Heuristic</h2>
+<p>The Manhattan distance is the standard heuristic for grid worlds
+with four-directional movement.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">manhattan</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> abs(a[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> b[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">+</span> abs(a[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> b[<span style="color:#ae81ff">1</span>])
+</span></span></code></pre></div><h2 id="implementation">Implementation</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> heapq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">astar</span>(world, start, goal):
+</span></span><span style="display:flex;"><span>    open_set <span style="color:#f92672">=</span> [(<span style="color:#ae81ff">0</span>, start)]
+</span></span><span style="display:flex;"><span>    came_from <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>    g_score <span style="color:#f92672">=</span> {start: <span style="color:#ae81ff">0</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> open_set:
+</span></span><span style="display:flex;"><span>        _, current <span style="color:#f92672">=</span> heapq<span style="color:#f92672">.</span>heappop(open_set)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> current <span style="color:#f92672">==</span> goal:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> reconstruct_path(came_from, start, goal)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> nb <span style="color:#f92672">in</span> world<span style="color:#f92672">.</span>neighbours(current):
+</span></span><span style="display:flex;"><span>            tentative_g <span style="color:#f92672">=</span> g_score[current] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> tentative_g <span style="color:#f92672">&lt;</span> g_score<span style="color:#f92672">.</span>get(nb, float(<span style="color:#e6db74">&#39;inf&#39;</span>)):
+</span></span><span style="display:flex;"><span>                came_from[nb] <span style="color:#f92672">=</span> current
+</span></span><span style="display:flex;"><span>                g_score[nb] <span style="color:#f92672">=</span> tentative_g
+</span></span><span style="display:flex;"><span>                f <span style="color:#f92672">=</span> tentative_g <span style="color:#f92672">+</span> manhattan(nb, goal)
+</span></span><span style="display:flex;"><span>                heapq<span style="color:#f92672">.</span>heappush(open_set, (f, nb))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div></p>
+  </section>
 
-
-
+  <section class="section-block" data-jump="Content">
+    <p>A* combines the completeness of BFS with a heuristic that guides the
+search toward the goal, making it much faster on large grids.</p>
+<h2 id="heuristic">Heuristic</h2>
+<p>The Manhattan distance is the standard heuristic for grid worlds
+with four-directional movement.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">manhattan</span>(a, b):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> abs(a[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> b[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">+</span> abs(a[<span style="color:#ae81ff">1</span>] <span style="color:#f92672">-</span> b[<span style="color:#ae81ff">1</span>])
+</span></span></code></pre></div><h2 id="implementation">Implementation</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> heapq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">astar</span>(world, start, goal):
+</span></span><span style="display:flex;"><span>    open_set <span style="color:#f92672">=</span> [(<span style="color:#ae81ff">0</span>, start)]
+</span></span><span style="display:flex;"><span>    came_from <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>    g_score <span style="color:#f92672">=</span> {start: <span style="color:#ae81ff">0</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> open_set:
+</span></span><span style="display:flex;"><span>        _, current <span style="color:#f92672">=</span> heapq<span style="color:#f92672">.</span>heappop(open_set)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> current <span style="color:#f92672">==</span> goal:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> reconstruct_path(came_from, start, goal)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> nb <span style="color:#f92672">in</span> world<span style="color:#f92672">.</span>neighbours(current):
+</span></span><span style="display:flex;"><span>            tentative_g <span style="color:#f92672">=</span> g_score[current] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> tentative_g <span style="color:#f92672">&lt;</span> g_score<span style="color:#f92672">.</span>get(nb, float(<span style="color:#e6db74">&#39;inf&#39;</span>)):
+</span></span><span style="display:flex;"><span>                came_from[nb] <span style="color:#f92672">=</span> current
+</span></span><span style="display:flex;"><span>                g_score[nb] <span style="color:#f92672">=</span> tentative_g
+</span></span><span style="display:flex;"><span>                f <span style="color:#f92672">=</span> tentative_g <span style="color:#f92672">+</span> manhattan(nb, goal)
+</span></span><span style="display:flex;"><span>                heapq<span style="color:#f92672">.</span>heappush(open_set, (f, nb))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div>
+  </section>
+</article>
 
       </div>
       <footer class="bottom-of-page">
         
         <div class="prev-next">
-          <div></div>
-          <div><a href="/01-introduction/">Introduction →</a></div>
+          <div><a href="/03-navigation/02-wall-following/">← Wall Following</a></div>
+          <div><a href="/04-decision-making/">Decision Making →</a></div>
         </div>
         
         <div class="footer-bottom">

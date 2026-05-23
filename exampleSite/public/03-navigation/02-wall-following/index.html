@@ -3,7 +3,7 @@
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tags — Robot Explorers</title>
+  <title>Wall Following — Robot Explorers</title>
   
   <style>*, *::before, *::after { box-sizing: border-box; }
 
@@ -972,7 +972,13 @@ body {
     
   
     
-  
+      
+      
+        
+      
+      
+        
+      
     
   
     
@@ -981,9 +987,9 @@ body {
   
     
   
-  
-  
     
+  
+  
   
 
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -1057,7 +1063,7 @@ body {
             
               
             
-            <li class="sidebar-module">
+            <li class="sidebar-module open">
               <a href="/03-navigation/" class="sidebar-module-link">Navigation Algorithms</a>
               
               
@@ -1067,7 +1073,7 @@ body {
                   <a href="/03-navigation/01-grid-search/">Grid Search</a>
                 </li>
                 
-                <li>
+                <li class="current">
                   <a href="/03-navigation/02-wall-following/">Wall Following</a>
                 </li>
                 
@@ -1108,8 +1114,8 @@ body {
           </ul>
         </nav>
         <div class="sidebar-nav-buttons">
-          
-          <a href="/01-introduction/" class="sidebar-nav-next">Next →</a>
+          <a href="/03-navigation/01-grid-search/" class="sidebar-nav-prev">← Previous</a>
+          <a href="/03-navigation/03-a-star/" class="sidebar-nav-next">Next →</a>
         </div>
         <div class="sidebar-curriculum-link">
           <a href="https://curriculum.jointheleague.org">← All Curricula</a>
@@ -1173,32 +1179,87 @@ body {
       <header class="session-sticky">
         <div class="session-sticky-row">
           <div class="session-sticky-pos">
-            <span class="pos-class">Robot Explorers</span>
-            Tags
+            <span class="pos-class">Navigation Algorithms</span>
+            Wall Following
           </div>
-          <a href="/01-introduction/" class="btn-next-mobile">Next →</a>
+          <a href="/03-navigation/03-a-star/" class="btn-next-mobile">Next →</a>
           <button type="button" class="btn-resources" id="jump-overview">Overview</button>
         </div>
         <div class="jump-row" id="jump-row"></div>
       </header>
       <div class="content session-content">
         
-<section class="session-header" data-jump="Overview">
-  <span class="eyebrow"><span>Module</span><span class="pos">· Tags</span></span>
-  <h1 class="session-title">Tags</h1>
-  
-</section>
+<article class="session-page">
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    
+    / <a href="/03-navigation/">Navigation Algorithms</a>
+    
+    / <span>Wall Following</span>
+  </nav>
+
+  <section class="session-header" data-jump="Overview">
+    <span class="eyebrow">
+      <span>Lesson</span>
+      <span class="pos">· Navigation Algorithms</span>
+    </span>
+    <h1 class="session-title">Wall Following</h1>
+    <p class="session-summary"><p>Wall-following (the &ldquo;right-hand rule&rdquo;) is a simple reactive strategy
+that works in any simply-connected maze without needing a map.</p>
+<h2 id="the-algorithm">The Algorithm</h2>
+<p>Keep your right hand touching the wall at all times and you will
+eventually reach the exit.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wall_follow</span>(bot):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> bot<span style="color:#f92672">.</span>at_goal():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> bot<span style="color:#f92672">.</span>can_turn_right():
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>turn_right()
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>move_forward(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> bot<span style="color:#f92672">.</span>can_move_forward():
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>move_forward(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>turn_left()
+</span></span></code></pre></div><div class="callout callout-tip">
+  <div class="callout-title">Tip</div>
+  <div class="callout-content">
+    The right-hand rule fails in mazes with islands (disconnected walls).
+Use BFS when you need a guaranteed solution.
+  </div>
+</div></p>
+  </section>
+
+  <section class="section-block" data-jump="Content">
+    <p>Wall-following (the &ldquo;right-hand rule&rdquo;) is a simple reactive strategy
+that works in any simply-connected maze without needing a map.</p>
+<h2 id="the-algorithm">The Algorithm</h2>
+<p>Keep your right hand touching the wall at all times and you will
+eventually reach the exit.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">wall_follow</span>(bot):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> bot<span style="color:#f92672">.</span>at_goal():
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> bot<span style="color:#f92672">.</span>can_turn_right():
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>turn_right()
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>move_forward(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> bot<span style="color:#f92672">.</span>can_move_forward():
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>move_forward(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            bot<span style="color:#f92672">.</span>turn_left()
+</span></span></code></pre></div><div class="callout callout-tip">
+  <div class="callout-title">Tip</div>
+  <div class="callout-content">
+    The right-hand rule fails in mazes with islands (disconnected walls).
+Use BFS when you need a guaranteed solution.
+  </div>
+</div>
 
 
-
-
+  </section>
+</article>
 
       </div>
       <footer class="bottom-of-page">
         
         <div class="prev-next">
-          <div></div>
-          <div><a href="/01-introduction/">Introduction →</a></div>
+          <div><a href="/03-navigation/01-grid-search/">← Grid Search</a></div>
+          <div><a href="/03-navigation/03-a-star/">A* Pathfinding →</a></div>
         </div>
         
         <div class="footer-bottom">

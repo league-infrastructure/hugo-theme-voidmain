@@ -3,7 +3,7 @@
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1314&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tags — Robot Explorers</title>
+  <title>Goal Planning — Robot Explorers</title>
   
   <style>*, *::before, *::after { box-sizing: border-box; }
 
@@ -184,12 +184,12 @@ body {
 
 .sidebar-lessons {
   display: none;
-  margin-left: 1rem;
+  margin-left: 1.1rem;
   border-left: 2px solid var(--color-border);
 }
 
 .sidebar-lessons a {
-  padding-left: 1.75rem;
+  padding-left: 0.75rem;
   font-size: 0.81rem;
 }
 
@@ -980,10 +980,14 @@ body {
     
   
     
-  
-  
-  
+      
+      
+        
+      
+      
     
+  
+  
   
 
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
@@ -1086,7 +1090,7 @@ body {
             
               
             
-            <li class="sidebar-module">
+            <li class="sidebar-module open">
               <a href="/04-decision-making/" class="sidebar-module-link">Decision Making</a>
               
               
@@ -1096,7 +1100,7 @@ body {
                   <a href="/04-decision-making/01-state-machines/">State Machines</a>
                 </li>
                 
-                <li>
+                <li class="current">
                   <a href="/04-decision-making/02-goal-planning/">Goal Planning</a>
                 </li>
                 
@@ -1108,8 +1112,8 @@ body {
           </ul>
         </nav>
         <div class="sidebar-nav-buttons">
+          <a href="/04-decision-making/01-state-machines/" class="sidebar-nav-prev">← Previous</a>
           
-          <a href="/01-introduction/" class="sidebar-nav-next">Next →</a>
         </div>
         <div class="sidebar-curriculum-link">
           <a href="https://curriculum.jointheleague.org">← All Curricula</a>
@@ -1173,32 +1177,97 @@ body {
       <header class="session-sticky">
         <div class="session-sticky-row">
           <div class="session-sticky-pos">
-            <span class="pos-class">Robot Explorers</span>
-            Tags
+            <span class="pos-class">Decision Making</span>
+            Goal Planning
           </div>
-          <a href="/01-introduction/" class="btn-next-mobile">Next →</a>
+          
           <button type="button" class="btn-resources" id="jump-overview">Overview</button>
         </div>
         <div class="jump-row" id="jump-row"></div>
       </header>
       <div class="content session-content">
         
-<section class="session-header" data-jump="Overview">
-  <span class="eyebrow"><span>Module</span><span class="pos">· Tags</span></span>
-  <h1 class="session-title">Tags</h1>
-  
-</section>
+<article class="session-page">
+  <nav class="breadcrumb">
+    <a href="/">Home</a>
+    
+    / <a href="/04-decision-making/">Decision Making</a>
+    
+    / <span>Goal Planning</span>
+  </nav>
+
+  <section class="session-header" data-jump="Overview">
+    <span class="eyebrow">
+      <span>Lesson</span>
+      <span class="pos">· Decision Making</span>
+    </span>
+    <h1 class="session-title">Goal Planning</h1>
+    <p class="session-summary"><p>Rather than reacting to the immediate environment, a planning robot
+reasons about a sequence of actions that leads from the current state
+to a goal state.</p>
+<h2 id="strips-style-goals">STRIPS-Style Goals</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>goal <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;robot_at&#34;</span>: (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;map_coverage&#34;</span>: <span style="color:#ae81ff">0.8</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="simple-planner">Simple Planner</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plan</span>(current_state, goal, actions):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> satisfies(current_state, goal):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> action <span style="color:#f92672">in</span> actions:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> action<span style="color:#f92672">.</span>preconditions_met(current_state):
+</span></span><span style="display:flex;"><span>            new_state <span style="color:#f92672">=</span> action<span style="color:#f92672">.</span>apply(current_state)
+</span></span><span style="display:flex;"><span>            rest <span style="color:#f92672">=</span> plan(new_state, goal, actions)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> rest <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> [action] <span style="color:#f92672">+</span> rest
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><div class="callout callout-info">
+  <div class="callout-title">Info</div>
+  <div class="callout-content">
+    This naive planner works for small problems. For large worlds use A*
+over the state space or a dedicated planning library.
+  </div>
+</div></p>
+  </section>
+
+  <section class="section-block" data-jump="Content">
+    <p>Rather than reacting to the immediate environment, a planning robot
+reasons about a sequence of actions that leads from the current state
+to a goal state.</p>
+<h2 id="strips-style-goals">STRIPS-Style Goals</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>goal <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;robot_at&#34;</span>: (<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>),
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;map_coverage&#34;</span>: <span style="color:#ae81ff">0.8</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="simple-planner">Simple Planner</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plan</span>(current_state, goal, actions):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> satisfies(current_state, goal):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> action <span style="color:#f92672">in</span> actions:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> action<span style="color:#f92672">.</span>preconditions_met(current_state):
+</span></span><span style="display:flex;"><span>            new_state <span style="color:#f92672">=</span> action<span style="color:#f92672">.</span>apply(current_state)
+</span></span><span style="display:flex;"><span>            rest <span style="color:#f92672">=</span> plan(new_state, goal, actions)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> rest <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> [action] <span style="color:#f92672">+</span> rest
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span></code></pre></div><div class="callout callout-info">
+  <div class="callout-title">Info</div>
+  <div class="callout-content">
+    This naive planner works for small problems. For large worlds use A*
+over the state space or a dedicated planning library.
+  </div>
+</div>
 
 
-
-
+  </section>
+</article>
 
       </div>
       <footer class="bottom-of-page">
         
         <div class="prev-next">
+          <div><a href="/04-decision-making/01-state-machines/">← State Machines</a></div>
           <div></div>
-          <div><a href="/01-introduction/">Introduction →</a></div>
         </div>
         
         <div class="footer-bottom">
