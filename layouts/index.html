@@ -1,6 +1,6 @@
 {{ define "main" }}
 <section class="session-header" data-jump="Overview">
-  <span class="eyebrow"><span>Robot Explorers</span><span class="pos">· Curriculum</span></span>
+  <span class="eyebrow"><span>{{ .Site.Title }}</span><span class="pos">· Curriculum</span></span>
   <h1 class="session-title">{{ .Site.Title }}</h1>
   {{ with .Site.Params.description }}<p class="session-summary">{{ . }}</p>{{ end }}
 </section>

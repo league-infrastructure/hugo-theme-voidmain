@@ -58,20 +58,43 @@
             </li>
             {{ else }}
             {{ range $sections }}
+            {{ $sec := . }}
             {{/* Module is "open" if the current page is this section or any page within it */}}
-            {{ $isOpen := eq $.RelPermalink .RelPermalink }}
+            {{ $isCurrent := eq $.RelPermalink .RelPermalink }}
+            {{ $isOpen := $isCurrent }}
             {{ range .Pages }}
               {{ if eq $.RelPermalink .RelPermalink }}{{ $isOpen = true }}{{ end }}
             {{ end }}
-            <li class="sidebar-module{{ if $isOpen }} open{{ end }}{{ if eq $.RelPermalink .RelPermalink }} current{{ end }}">
-              <a href="{{ .RelPermalink }}" class="sidebar-module-link">{{ .Title }}</a>
-              {{ $pages := sort .Pages "File.Path" }}
+            {{ $pages := sort .Pages "File.Path" }}
+            {{/* A section with no lessons expands to an outline of its own h2 headings instead */}}
+            {{ $outline := slice }}
+            {{ if not $pages }}
+              {{ range .Fragments.Headings }}
+                {{ if eq .Level 2 }}{{ $outline = $outline | append . }}{{ end }}
+                {{ range .Headings }}{{ if eq .Level 2 }}{{ $outline = $outline | append . }}{{ end }}{{ end }}
+              {{ end }}
+            {{ end }}
+            <li class="sidebar-module{{ if $isOpen }} open{{ end }}{{ if $isCurrent }} current{{ end }}">
+              <div class="sidebar-module-row">
+                {{ if or $pages $outline }}
+                <button type="button" class="sidebar-module-toggle" aria-expanded="{{ if $isOpen }}true{{ else }}false{{ end }}" aria-label="Show contents of {{ .Title }}"></button>
+                {{ else }}
+                <span class="sidebar-module-toggle" aria-hidden="true"></span>
+                {{ end }}
+                <a href="{{ .RelPermalink }}" class="sidebar-module-link">{{ .Title }}</a>
+              </div>
               {{ if $pages }}
               <ul class="sidebar-lessons">
                 {{ range $pages }}
                 <li{{ if eq $.RelPermalink .RelPermalink }} class="current"{{ end }}>
                   <a href="{{ .RelPermalink }}">{{ .Title }}</a>
                 </li>
+                {{ end }}
+              </ul>
+              {{ else if $outline }}
+              <ul class="sidebar-lessons sidebar-outline">
+                {{ range $outline }}
+                <li><a href="{{ $sec.RelPermalink }}#{{ .ID }}">{{ .Title | safeHTML }}</a></li>
                 {{ end }}
               </ul>
               {{ end }}
@@ -150,9 +173,9 @@
             {{ .Title }}
           </div>
           {{ with $next }}<a href="{{ .RelPermalink }}" class="btn-next-mobile">Next →</a>{{ end }}
-          <button type="button" class="btn-resources" id="jump-overview">Overview</button>
+          {{ if not .IsHome }}<button type="button" class="btn-resources" id="jump-overview">Overview</button>{{ end }}
         </div>
-        <div class="jump-row" id="jump-row"></div>
+        {{ if not .IsHome }}<div class="jump-row" id="jump-row"></div>{{ end }}
       </header>
       <div class="content session-content">
         {{ block "main" . }}
@@ -204,22 +227,21 @@
         sidebarDrawer.classList.contains('open') ? closeSidebar() : openSidebar();
       });
       sidebarOverlay.addEventListener('click', closeSidebar);
-      // Lesson links close the sidebar; module section headers toggle expand/collapse and stay open
-      sidebarDrawer.querySelectorAll('.sidebar-lessons a').forEach(function(a) {
-        a.addEventListener('click', closeSidebar);
-      });
-      sidebarDrawer.querySelectorAll('.sidebar-module-link').forEach(function(a) {
-        a.addEventListener('click', function(e) {
-          e.preventDefault();
-          var li = a.closest('.sidebar-module');
-          if (li) li.classList.toggle('open');
-        });
-      });
-      // Non-module links (brand, footer links) still close the sidebar
-      sidebarDrawer.querySelectorAll('.sidebar-brand, .sidebar-curriculum-link a, .sidebar-footer a').forEach(function(a) {
+      // Every navigation link in the drawer closes it; only the expand/collapse chevrons keep it open
+      sidebarDrawer.querySelectorAll('.sidebar-module-link, .sidebar-lessons a, .sidebar-brand, .sidebar-curriculum-link a, .sidebar-footer a').forEach(function(a) {
         a.addEventListener('click', closeSidebar);
       });
     }
+
+    // Module chevrons expand/collapse the lessons or outline under a module (desktop and mobile)
+    document.querySelectorAll('button.sidebar-module-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var li = btn.closest('.sidebar-module');
+        if (!li) return;
+        var open = li.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
 
     // Instructor guide panel
     var sections = document.querySelectorAll('.instructor-guide-section');

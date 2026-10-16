@@ -163,15 +163,49 @@ body {
   color: var(--color-fg-1) !important;
 }
 
-.sidebar-module-link::before {
-  content: "▸";
-  display: inline-block;
-  width: 1em;
-  margin-right: 0.2em;
-  color: var(--color-fg-muted);
+/* Module title is a real link; the chevron beside it is a separate expand/collapse control */
+.sidebar-module-row {
+  display: flex;
+  align-items: stretch;
+  padding-left: 0.4rem;
 }
 
-.sidebar-module.open > .sidebar-module-link::before {
+.sidebar-module-row > .sidebar-module-link {
+  flex: 1;
+  min-width: 0;
+  padding-left: 0.3rem;
+}
+
+.sidebar-module-toggle {
+  flex: 0 0 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  color: var(--color-fg-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+}
+
+button.sidebar-module-toggle {
+  cursor: pointer;
+}
+
+button.sidebar-module-toggle::before {
+  content: "▸";
+}
+
+button.sidebar-module-toggle:hover {
+  color: var(--color-fg-1);
+  background: #fff;
+}
+
+.sidebar-module.open > .sidebar-module-row > button.sidebar-module-toggle::before {
   content: "▾";
 }
 
@@ -190,7 +224,8 @@ body {
   display: block;
 }
 
-.sidebar-tree .current > a {
+.sidebar-tree .current > a,
+.sidebar-tree .current > .sidebar-module-row > a {
   background: var(--color-active-bg);
   color: var(--color-active-fg);
   font-weight: 700;
